@@ -14,19 +14,19 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = '';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'personalbudget';
+    const DB_NAME = '';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = '';
 
     /**
      * Database password
@@ -40,5 +40,5 @@ class Config
      */
     const SHOW_ERRORS = true;
 	
-	const SECRET_KEY = 'Hsdo6mGV8eFj6kwXGDRk2wjzkfQ5ga53';
+	const SECRET_KEY = '';
 }
