@@ -1,0 +1,287 @@
+body{
+	
+	background-color: #404040;
+	font-family: Verdana;
+	font-size: 20px;
+	color: white;
+	height: 100%;
+}
+
+
+#page-content{
+	
+  flex: 1 0 auto;
+}
+
+
+h1{
+	
+	font-weight: bold;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+
+h2{
+	font-size: 30px;
+	font-weight: bold;
+	border-bottom: 1px solid silver;
+	height: 50px;
+	
+}
+
+
+.navbar{
+	
+	min-height: 57px;
+}
+
+
+.logoStyle{
+	
+	background-color: #067e96;
+	
+}
+
+
+
+.buttonbg{
+	
+	background-color: #067e96;
+	color: white;
+	font-weight: bold;
+	
+}
+
+
+.buttonbg:hover{
+	
+	background-color: #035e70;
+	
+}
+
+
+.cancelButtonbg{
+	
+	background-color: #ff9100;
+	color: white;
+	font-weight: bold;
+	
+}
+
+
+.cancelButtonbg:hover{
+	
+	background-color: #c97300;
+	
+}
+
+
+.period{
+	margin-bottom: 20px;
+	padding: 0 100px;
+	
+
+}
+
+.period a{
+	padding: 10px 30px;
+    background-color: #067e96;
+    color: white;
+    text-decoration: none;
+
+}
+
+.period a:hover{
+	
+    background-color: #025769;
+
+}
+
+.leftPanel{
+	float:left;
+	
+}
+
+
+.rightPanel{
+	float:left;	
+	
+}
+
+
+
+
+.dateInputStyle{
+	float: left;
+	height: 30px;
+	width: 150px;
+	opacity: 0.5;
+	
+}
+
+.periodInputStyle {
+	
+	height: 30px;
+}
+
+#goToRegister{
+	
+	padding-top: 20px;
+	font-weight: normal;
+}
+
+
+#goToRegister a{
+	
+	font-size: 18px;
+	text-decoration: none;
+	color: #067e96;
+	font-weight: bold;
+}
+
+
+#goToRegister a:hover{
+	
+	color: red;
+}
+
+
+#goToLogin {
+	
+	padding-top: 10px;
+	
+}
+
+
+#goToLogin a{
+	
+	font-size: 18px;
+	text-decoration: none;
+	color: #067e96;
+	font-weight: bold;
+	
+}
+
+
+#goToLogin a:hover{
+	
+	color: red;
+}
+
+
+.formCategory{
+	
+	margin-top: 5px;
+	margin-bottom: 8px;
+}
+
+
+
+.category{
+	
+	margin-top: 5px;
+}
+
+
+.option > .buttonbg{
+	
+	width: 80%;
+	height: 50%;
+	line-height: 35px;
+}
+
+.optionLogout > .buttonbg{
+	
+	background-color: #ff9100;
+	
+}
+
+
+.optionLogout > .buttonbg:hover{
+	
+	background-color: #c97300;
+	
+}
+
+
+.category{
+	
+	margin-top: 5px;
+}
+
+
+table{
+	width: 100%;
+	border: 1px solid black;
+	font-size: 16px;
+	background-color: #ffffff;
+	color: black;
+}
+
+ th, td{
+	width: 50%;
+	border: 1px solid black;
+	font-size: 16px;
+	background-color: #ffffff;
+	color: black;
+}
+
+
+	
+
+
+.eyeStyle{
+	height: 40px;
+	width: 20%;
+	color: #white;
+	cursor: pointer;
+	background-color: gray;
+	border-radius: 8px;
+	border: 2px solid #067e96;
+
+
+}
+
+.eyeStyle:hover{
+	
+	background-color: #9e9e9e;
+	
+}
+
+.passField{
+	width: 260px;
+	font-size: 20px;
+	margin-left: 5px;
+	
+}
+
+i{
+	width: 50px;
+	background-color: gray;
+	
+}
+
+.formstyle{
+	
+	background-color: rgba(255,255,255,0.13);
+	backdrop-filter: blur(10px);
+	border-radius: 5px;
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+	padding: 20px;
+}
+
+.goToLogin{
+	
+	text-decoration: none;
+	color:white;
+	
+}
+
+.forgotButton{
+	
+	text-decoration:none;
+	color: white;
+	
+}
