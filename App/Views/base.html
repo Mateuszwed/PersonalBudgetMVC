@@ -1,11 +1,67 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+	<meta charset="utf-8" />
+	<title>Budżet Osobisty</title>
+	<meta name="description" content="Strona pozwoli Ci obliczyć swoje przychody oraz wydatki." />
+	<meta name="keywords" content="budżet personalny, przychody, wydatki" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/style.css">	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	
+	{% block head %}{% endblock %}
+
 </head>
-<body>
-    {% block body %}
-    {% endblock %}
+
+<body class="d-flex flex-column min-vh-100">
+	
+	<header>
+		
+		<div class="navbar logoStyle mb-5">
+		
+		<h1>BUDŻET PERSONALNY</h1>
+		
+		</div>
+		
+	</header>
+
+      {% block navigation %}
+      {% endblock %}
+
+    </header>
+    <main>
+
+      {% block body %}
+      {% endblock %}
+	  
+	  {% for message in flash_messages %}
+      <div class="alert alert-{{ message.type }} text-center small mt-5" role="alert">
+        {{ message.body }}
+      </div>
+      {% endfor %}
+
+    </main>
+	<footer class="mt-auto">
+	
+		<div class="text-center p-3 info" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2022 Wszelkie prawa zastrzeżone</a>
+		</div>
+	
+	</footer>
+  </div>
+
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/script.js"></script>
+
+  {% block footer %}
+  {% endblock %}
+
 </body>
+
 </html>
