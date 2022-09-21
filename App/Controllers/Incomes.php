@@ -34,12 +34,9 @@ class Incomes extends Authenticated
         } else {
             Flash::addMessage('Nie udało się zarejestrować przychodu.', Flash::WARNING);
             
-            $settings = new SettingsData();
-            $categoriesIncomes = $settings->getIncomesCategories();
         
             View::renderTemplate('Incomes/add.html', [
-                'income' => $income,
-                'categoriesIncomes' => $categoriesIncomes
+                'income' => $income
             ]);
         }
     }

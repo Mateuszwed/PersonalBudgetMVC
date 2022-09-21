@@ -33,15 +33,10 @@ class Expenses extends Authenticated
 
         } else {
             Flash::addMessage('Nie udało się zarejestrować wydatku.', Flash::WARNING);
-            
-            $settings = new SettingsData();
-            $categoriesExpenses = $settings->getExpensesCategories();
-            $paymentMethods = $settings->getPaymentMethods();
+           
 
             View::renderTemplate('Expenses/add.html', [
-                'expense' => $expense,
-                'categoriesExpenses' => $categoriesExpenses,
-                'paymentMethods' => $paymentMethods
+                'expense' => $expense
             ]);
         }
     }
