@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Show Balance{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+
+	<div class="row justify-content-md-center mt-3">
+		<div class="col-sm-12 col-md-6 col-lg-12 text-center formstyle">
+			<h2 style="text-align: center;">Bilans</h2>
+			<div class="period navbar d-sm-flex justify-content-center" >
+				<div class="p-2 float-start">
+					<a class="btn btn-primary" href="/balance/show?option=1">Bieżący miesiąc</a>
+				</div>
+				<div class="p-2 float-start">
+					<a class="btn btn-primary" href="/balance/show?option=2">Poprzedni miesiąc</a>
+				</div>
+				<div class="p-2 float-start" >
+					<a class="btn btn-primary" href="/balance/show?option=3">Bieżący rok</a>
+				</div>
+				<div class="p-2 float-start">
+					<a class="btn btn-primary" href="#myModal" data-bs-toggle="modal" >Niestandardowy</a>	
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+
+				<div style="clear:both;"></div>
+				
+				<div class="col-12 col-lg-6 mt-3 p-1 text-center leftPanel">
+				
+					<div>PRZYCHODY</div>
+							<table class="text-center">
+								<tr>
+									<th>Kategoria</th>
+									<th>Data</th>
+									<th>Kwota</th>
+								</tr>
+								{% for income in incomesGenerally %}
+								<tr>
+									<td>{{ income[1] }}</td>
+									<td>{{ income[2] }}</td>
+									<td>{{ income[0] }}</td>
+								</tr>
+								{% endfor %} 
+							</table>
+							{% if incomesSum %}
+								SUMA: {{ incomesSum }}
+								{% else %}
+								SUMA: 0.00
+								{% endif %}
+						
+				</div>
+
+				<div class="col-12 col-lg-6 mt-3 p-1 text-center rightPanel">
+					<div>WYDATKI</div>
+							<table class="text-center">
+								<tr>
+									<th>Kategoria</th>
+									<th>Data</th>
+									<th>Kwota</th>
+								</tr>
+								{% for expense in expensesGenerally %}
+								<tr>
+									<td>{{ expense[0] }}</td>
+									<td>{{ expense[2] }}</td>
+									<td>{{ expense[1] }}</td>
+								</tr>
+								{% endfor %}
+							</table> 
+							{% if expensesSum %}
+								SUMA: {{ expensesSum }}
+								{% else %}
+								SUMA: 0.00
+								{% endif %}
+				</div>
+				<div style="clear:both;"></div>
+
+
+				<div class="col-12">
+
+				<a href="/" class="btn cancelButtonbg mt-4 mb-2">WRÓĆ</a>
+
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade text-body" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Wybierz przedział czasowy</h4>
+			<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+			<form method="post" action="/balance/show" >
+				<div class="modal-body text-center mt-3 mb-3">
+					<div id="selectPeriod">	
+						od <input type="date" name="dateBegin" id="dateBegin">
+						do <input type="date" name="dateEnd" id="dateEnd">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-primary" >Pokaż</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
