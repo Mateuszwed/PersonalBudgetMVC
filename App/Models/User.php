@@ -323,7 +323,9 @@ class User extends \Core\Model
     }
 	
 	
-		public function sendActivationEmail(){
+	
+	
+	public function sendActivationEmail(){
 		
 		$url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
 		
@@ -333,10 +335,16 @@ class User extends \Core\Model
 		Mail::send($this->email, 'Aktywacja konta', $text, $html);
 	}
 	
+	
 	public static function activate($value){
 		
 		$token = new Token($value);
 		$hashed_token = $token->getHash();
+		
+		$user_id = static::findByActivationToken($hashed_token);
+		static::addDefaultIncomeCategories($user_id);
+		static::addDefaultExpenseCategories($user_id);
+		static::addDefaultPaymentMethods($user_id);
 		
 		$sql = 'UPDATE users SET is_active = 1, activation_hash = null WHERE activation_hash = :hashed_token';
 		
@@ -348,4 +356,64 @@ class User extends \Core\Model
 		$stmt->execute();
 		
 	}
+	
+	
+	public static function findByActivationToken($hashed_token) {
+        $sql = 'SELECT id FROM users
+                WHERE activation_hash = :hashed_token';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':hashed_token', $hashed_token, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $fetchArray = $stmt->fetch();
+        return $fetchArray['id'];
+    }
+	
+	
+	public static function addDefaultIncomeCategories($user_id){
+		
+		$sql = "INSERT INTO incomes_category_assigned_to_users (user_id, name)
+					SELECT :user_id, name FROM incomes_category_default";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+	}
+	
+	
+	public static function addDefaultExpenseCategories($user_id){
+		
+		$sql = "INSERT INTO expenses_category_assigned_to_users (user_id, name) 
+					SELECT :user_id, name FROM expenses_category_default";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+	}
+	
+	
+	public static function addDefaultPaymentMethods($user_id){
+		
+		$sql = "INSERT INTO payment_methods_assigned_to_users (user_id, name) 
+					SELECT :user_id, name FROM payment_methods_default";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+	}
+	
 }

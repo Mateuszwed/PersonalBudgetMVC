@@ -3,6 +3,7 @@
 
 namespace App\Models;
 
+use PDO;
 
 class BalanceData extends \Core\Model
 {
@@ -78,10 +79,20 @@ class BalanceData extends \Core\Model
 
         $userID = $this->setUserID();
 
-        $sql =  "SELECT amount, name, date_of_income, SUM(amount), incomes.id FROM incomes, incomes_category_default WHERE user_id = '$userID' AND income_category_assigned_to_user_id = incomes_category_default.id AND date_of_income BETWEEN '$beginOfPeriod' AND '$endOfPeriod' GROUP BY incomes.id ";
+        $sql =  "SELECT amount, name, date_of_income, SUM(amount), incomes.id
+					FROM incomes, incomes_category_assigned_to_users 
+					WHERE incomes_category_assigned_to_users.user_id = :userId 
+					AND income_category_assigned_to_user_id = incomes_category_assigned_to_users.id 
+					AND date_of_income 
+					BETWEEN :beginOfPeriod 
+					AND :endOfPeriod 
+					GROUP BY incomes.id ";
 
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
+		$stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+		$stmt->bindValue(':beginOfPeriod', $beginOfPeriod, PDO::PARAM_STR);
+		$stmt->bindValue(':endOfPeriod', $endOfPeriod, PDO::PARAM_STR);
 		$stmt->execute();
         
         $incomesGenerally = $stmt->fetchAll();
@@ -95,10 +106,20 @@ class BalanceData extends \Core\Model
 
 		$userID = $this->setUserID();
 
-		$sql = "SELECT name, amount, date_of_expense, SUM(amount), expenses.id FROM expenses_category_default, expenses WHERE user_id = '$userID' AND expense_category_assigned_to_user_id = expenses_category_default.id AND date_of_expense BETWEEN '$beginOfPeriod' AND '$endOfPeriod' GROUP BY expenses.id";
+		$sql = "SELECT name, amount, date_of_expense, SUM(amount), expenses.id 
+					FROM expenses, expenses_category_assigned_to_users
+					WHERE expenses_category_assigned_to_users.user_id = :userId 
+					AND expense_category_assigned_to_user_id = expenses_category_assigned_to_users.id 
+					AND date_of_expense 
+					BETWEEN :beginOfPeriod 
+					AND :endOfPeriod 
+					GROUP BY expenses.id";
 
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
+		$stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+		$stmt->bindValue(':beginOfPeriod', $beginOfPeriod, PDO::PARAM_STR);
+		$stmt->bindValue(':endOfPeriod', $endOfPeriod, PDO::PARAM_STR);
 		$stmt->execute();
 
 		$expensesGenerally = $stmt->fetchAll();

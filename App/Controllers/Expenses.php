@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use \App\Models\Expense;
-use \App\Models\SettingsData;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
@@ -19,7 +18,14 @@ class Expenses extends Authenticated
 
     public function addAction()
     {
-        View::renderTemplate('Expenses/add.html');
+		$categories = new Expense();
+		$categoriesExpenses = $categories->getExpensesCategories();
+		$paymentMethod = $categories->getPaymentMethods();
+		
+        View::renderTemplate('Expenses/add.html', [
+		'categoriesExpenses' => $categoriesExpenses,
+		'paymentMethod' => $paymentMethod
+		]);
     }
 	
     public function createAction()
@@ -33,10 +39,15 @@ class Expenses extends Authenticated
 
         } else {
             Flash::addMessage('Nie udało się zarejestrować wydatku.', Flash::WARNING);
-           
-
+           	
+			$categories = new Expense();
+			$categoriesExpenses = $categories->getExpensesCategories();
+			$paymentMethod = $categories->getPaymentMethods();
+			
             View::renderTemplate('Expenses/add.html', [
-                'expense' => $expense
+                'expense' => $expense,
+				'categoriesExpenses' => $categoriesExpenses,
+				'paymentMethod' => $paymentMethod
             ]);
         }
     }

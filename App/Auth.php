@@ -63,7 +63,7 @@ class Auth
 			
 		} else {
 			
-			
+			return static::loginFromRememberCookie();
 			
 		}
 	}

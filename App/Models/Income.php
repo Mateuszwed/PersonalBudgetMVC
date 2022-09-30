@@ -66,11 +66,35 @@ class Income extends \Core\Model
        return false;
     }
 
-    /**
-     * Validate current property values, adding validation error messages to the errors array property
-     *
-     * @return void
-     */
+	
+	public function setUserID () {
+		if (isset($_SESSION['user_id'])) {
+
+				return $userID = $_SESSION['user_id'];
+			} else {
+
+				return '';
+			}
+	}
+	
+	public function getIncomesCategories() {
+
+        $userID = $this->setUserID();
+
+        $sql = "SELECT ic.name, ic.id
+                FROM incomes_category_assigned_to_users AS ic 
+                WHERE ic.user_id = $userID";
+
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+        
+        $incomesCategories = $stmt->fetchAll();
+
+		return $incomesCategories;
+    }
+	
+	
     public function validate()
     {
         if ($this->amount <= 0) {

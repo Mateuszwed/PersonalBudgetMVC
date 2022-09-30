@@ -28,15 +28,14 @@
 					<div class="category border border-white right-text-styling w-75 mx-auto">
 					
 					Kategoria:
-					
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="category" value="1" checked> Wynagrodzenie </label></div>
-
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="category" value="2"> Odsetki bankowe </label></div>
-						
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="category" value="3"> Sprzedaż allegro </label></div>
-						
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="category" value="4"> Inne </label></div>
-						
+					{% for category in categoriesIncomes %}
+						<div class="formCategory">
+							<label>
+								<input class="form-check-input" type="radio" id='c{{category[1]}}' name="category" value="{{category[1]}}">
+								{{ category [0] }}
+							</label>
+						</div>
+					{% endfor %}
 					</div>
 					
 				<div class="category">

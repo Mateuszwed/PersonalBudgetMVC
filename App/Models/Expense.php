@@ -65,21 +65,67 @@ class Expense extends \Core\Model
 
        return false;
     }
+	
+	public function setUserID () {
+		if (isset($_SESSION['user_id'])) {
 
-    /**
-     * Validate current property values, adding validation error messages to the errors array property
-     *
-     * @return void
-     */
+				return $userID = $_SESSION['user_id'];
+			} else {
+
+				return '';
+			}
+	}
+
+    public function getExpensesCategories() {
+
+		$userID = $this->setUserID();
+
+		$sql = "SELECT name, id
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = $userID";
+
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+
+		$expensesCategories = $stmt->fetchAll();
+
+		return $expensesCategories;
+    }
+	
+	
+	public function getPaymentMethods() {
+
+        $userID = $this->setUserID();
+        
+        $sql = "SELECT name, id
+                FROM payment_methods_assigned_to_users 
+                WHERE user_id = $userID";
+
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+
+		$paymentMethods = $stmt->fetchAll();
+
+		return $paymentMethods;
+    }
+	
+	
     public function validate()
     {
         if ($this->amount <= 0) {
             $this->errors[0] = 'Wpisz poprawną kwotę!';
         }
         
+		if (!isset($this->payment)) {
+            $this->errors[1] = 'Wybierz sposób płatności!';
+		}
+		
         if (!isset($this->category)) {
             $this->errors[2] = 'Wybierz kategorię!';
 		}
+		
 
 		$year = substr($this->date , 0, 4);
 		$month = substr($this->date , 5, 2);

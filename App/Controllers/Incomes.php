@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use \App\Models\Income;
-use \App\Models\SettingsData;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
@@ -19,13 +18,18 @@ class Incomes extends Authenticated
 
     public function addAction()
     {
-        View::renderTemplate('Incomes/add.html');
+		$categories = new Income();
+		$categoriesIncomes = $categories->getIncomesCategories();
+        View::renderTemplate('Incomes/add.html', [
+			'categoriesIncomes' => $categoriesIncomes
+		]);
     }
 	
 	 public function createAction()
     {
         $user = Auth::getUser();
         $income = new Income($_POST);
+		
         
         if ($income->save($user->id)) {
 
@@ -33,10 +37,12 @@ class Incomes extends Authenticated
 
         } else {
             Flash::addMessage('Nie udało się zarejestrować przychodu.', Flash::WARNING);
-            
+            $categories = new Income();
+			$categoriesIncomes = $categories->getIncomesCategories();
         
             View::renderTemplate('Incomes/add.html', [
-                'income' => $income
+                'income' => $income,
+				'categoriesIncomes' => $categoriesIncomes
             ]);
         }
     }

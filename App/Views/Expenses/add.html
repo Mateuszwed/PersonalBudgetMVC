@@ -27,35 +27,28 @@
 					<div class="category border border-white right-text-styling w-75 mx-auto">
 					
 					Sposób płatności:
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="payment" value="1" checked> Gotówka </label></div>
+						{% for payment in paymentMethod %}	
+						<div class="formCategory">
+							<label>
+								<input class="form-check-input" type="radio" id='{{payment[1]}}' name="payment" value="{{payment[1]}}">
+								{{ payment[0] }}
+							</label>
+						</div>
+					{% endfor %}
 
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="payment" value="2" > Karta debetowa </label></div>
-						
-						<div class="formCategory"><label><input class="form-check-input" type="radio" name="payment" value="3" > Karta kredytowa </label></div>
-						
 					</div>
 				
 					<div class="category">
 						<div class="form-group mb-3 mt-2 right-text-styling w-75 mx-auto">
-						<label>Kategoria:<select name="category" class="form-select mt-1 mb-1 ">
-						<option value="1" selected>Jedzenie</option>
-						<option value="2" >Mieszkanie</option>
-						<option value="3" >Transport</option>
-						<option value="4" >Telekomunikacja</option>
-						<option value="5" >Opieka zdrowotna</option>
-						<option value="6" >Ubranie</option>
-						<option value="7" >Higiena</option>
-						<option value="8" >Dzieci</option>
-						<option value="9" >Rozrywka</option>
-						<option value="10" >Wycieczka</option>
-						<option value="11" >Szkolenia</option>
-						<option value="12" >Książki</option>
-						<option value="13" >Oszczędności</option>
-						<option value="14" >Na złotą jesień, czyli emeryturę</option>
-						<option value="15" >Spłata długów</option>
-						<option value="16" >Darowizna</option>
-						<option value="17" >Inne wydatki</option>
-						</select></label>
+						<label>Kategoria:
+						
+						<select name="category" class="form-select mt-1 mb-1">
+						{% for category in categoriesExpenses %}
+						<option value="{{category[1]}}" id='c{{category[1]}}'>{{ category[0] }}</option>
+						{% endfor %}
+						</select>
+						
+						</label>
 						</div>
 						
 					</div>
