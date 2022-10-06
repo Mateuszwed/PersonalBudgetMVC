@@ -5,19 +5,10 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\BalanceData;
 
-/**
- * Home controller
- *
- * PHP version 7.0
- */
+
 class Balance extends Authenticated
 {
 
-    /**
-     * Show the index page
-     *
-     * @return void
-     */
     public function showAction()
     {
 		

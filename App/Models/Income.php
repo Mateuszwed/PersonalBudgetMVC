@@ -4,29 +4,15 @@ namespace App\Models;
 
 use PDO;
 
-/**
- * User model
- *
- * PHP version 7.2
- */
+
 class Income extends \Core\Model
 {
-    /**
-     * Error messages
-     *
-     * @var array
-     */
+
     public $errors = [];
 	
 	public $amount = 0.1;
 
-    /**
-     * Class constructor
-     *
-     * @param array $data  Initial property values (optional)
-     *
-     * @return void
-     */
+
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -34,11 +20,7 @@ class Income extends \Core\Model
         };
     }
 
-    /**
-     * Save the income model with the current property values
-     *
-     * @return boolean  True if the income was saved, false otherwise
-     */
+
     public function save($user_id)
     {
         $this->validate();

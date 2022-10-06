@@ -7,12 +7,9 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 
-/**
- * Items controller (example)
- *
- * PHP version 7.0
- */
-//class Items extends \Core\Controller
+
+
+
 class Expenses extends Authenticated
 {
 

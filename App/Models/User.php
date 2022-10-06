@@ -7,28 +7,17 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 
-/**
- * User model
- *
- * PHP version 7.0
- */
+
+
+
+
 class User extends \Core\Model
 {
 
-    /**
-     * Error messages
-     *
-     * @var array
-     */
+
     public $errors = [];
 
-    /**
-     * Class constructor
-     *
-     * @param array $data  Initial property values (optional)
-     *
-     * @return void
-     */
+
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -36,11 +25,7 @@ class User extends \Core\Model
         };
     }
 
-    /**
-     * Save the user model with the current property values
-     *
-     * @return boolean  True if the user was saved, false otherwise
-     */
+
     public function save()
     {
         $this->validate();
@@ -70,19 +55,15 @@ class User extends \Core\Model
         return false;
     }
 
-    /**
-     * Validate current property values, adding valiation error messages to the errors array property
-     *
-     * @return void
-     */
+
     public function validate()
     {
-        // Name
+       
         if ($this->username == '') {
             $this->errors[] = 'Imię jest wymagane';
         }
 
-        // email address
+        
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
             $this->errors[] = 'Nieprawidłowy adres email';
         }
@@ -90,7 +71,7 @@ class User extends \Core\Model
             $this->errors[] = 'Ten adres email jest już zajęty';
         }
 
-        // Password
+        
         if (strlen($this->password) < 6) {
             $this->errors[] = 'Hasło musi zawierać co najmniej 6 znaków';
         }
@@ -108,13 +89,7 @@ class User extends \Core\Model
 		
     }
 
-    /**
-     * See if a user record already exists with the specified email
-     *
-     * @param string $email email address to search for
-     *
-     * @return boolean  True if a record already exists with the specified email, false otherwise
-     */
+
     public static function emailExists($email, $ignore_id = null)
     {
         $user = static::findByEmail($email);
@@ -128,13 +103,7 @@ class User extends \Core\Model
         return false;
     }
 
-    /**
-     * Find a user model by email address
-     *
-     * @param string $email email address to search for
-     *
-     * @return mixed User object if found, false otherwise
-     */
+
     public static function findByEmail($email)
     {
         $sql = 'SELECT * FROM users WHERE email = :email';
@@ -150,14 +119,7 @@ class User extends \Core\Model
         return $stmt->fetch();
     }
 
-    /**
-     * Authenticate a user by email and password.
-     *
-     * @param string $email email address
-     * @param string $password password
-     *
-     * @return mixed  The user object or false if authentication fails
-     */
+
     public static function authenticate($email, $password)
     {
         $user = static::findByEmail($email);
@@ -171,13 +133,7 @@ class User extends \Core\Model
         return false;
     }
 
-    /**
-     * Find a user model by ID
-     *
-     * @param string $id The user ID
-     *
-     * @return mixed User object if found, false otherwise
-     */
+
     public static function findByID($id)
     {
         $sql = 'SELECT * FROM users WHERE id = :id';
@@ -193,12 +149,7 @@ class User extends \Core\Model
         return $stmt->fetch();
     }
 
-    /**
-     * Remember the login by inserting a new unique token into the remembered_logins table
-     * for this user record
-     *
-     * @return boolean  True if the login was remembered successfully, false otherwise
-     */
+
     public function rememberLogin()
     {
         $token = new Token();

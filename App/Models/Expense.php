@@ -4,27 +4,13 @@ namespace App\Models;
 
 use PDO;
 
-/**
- * User model
- *
- * PHP version 7.2
- */
+
 class Expense extends \Core\Model
 {
-    /**
-     * Error messages
-     *
-     * @var array
-     */
+
     public $errors = [];
 
-    /**
-     * Class constructor
-     *
-     * @param array $data  Initial property values (optional)
-     *
-     * @return void
-     */
+
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -32,11 +18,6 @@ class Expense extends \Core\Model
         };
     }
 
-    /**
-     * Save the expense model with the current property values
-     *
-     * @return boolean  True if the expense was saved, false otherwise
-     */
     public function save($user_id)
     {
         $this->validate();
