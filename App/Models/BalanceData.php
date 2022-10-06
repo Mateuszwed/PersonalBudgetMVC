@@ -126,7 +126,58 @@ class BalanceData extends \Core\Model
 
 		return $expensesGenerally;
     }
+	
+	
+	    public function getIncomesPieChart($beginOfPeriod, $endOfPeriod) {
 
+        $userID = $this->setUserID();
 
+        $sql =  "SELECT amount, name, date_of_income, SUM(amount), incomes.id
+					FROM incomes, incomes_category_assigned_to_users 
+					WHERE incomes_category_assigned_to_users.user_id = :userId 
+					AND income_category_assigned_to_user_id = incomes_category_assigned_to_users.id 
+					AND date_of_income 
+					BETWEEN :beginOfPeriod 
+					AND :endOfPeriod 
+					GROUP BY income_category_assigned_to_user_id ";
 
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+		$stmt->bindValue(':beginOfPeriod', $beginOfPeriod, PDO::PARAM_STR);
+		$stmt->bindValue(':endOfPeriod', $endOfPeriod, PDO::PARAM_STR);
+		$stmt->execute();
+        
+        $incomesPieChart = $stmt->fetchAll();
+
+		return $incomesPieChart;
+    }
+	
+	
+	    public function getExpensesPieChart($beginOfPeriod, $endOfPeriod) {
+
+		$userID = $this->setUserID();
+
+		$sql = "SELECT name, amount, date_of_expense, SUM(amount), expenses.id 
+					FROM expenses, expenses_category_assigned_to_users
+					WHERE expenses_category_assigned_to_users.user_id = :userId 
+					AND expense_category_assigned_to_user_id = expenses_category_assigned_to_users.id 
+					AND date_of_expense 
+					BETWEEN :beginOfPeriod 
+					AND :endOfPeriod 
+					GROUP BY expense_category_assigned_to_user_id";
+
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+		$stmt->bindValue(':beginOfPeriod', $beginOfPeriod, PDO::PARAM_STR);
+		$stmt->bindValue(':endOfPeriod', $endOfPeriod, PDO::PARAM_STR);
+		$stmt->execute();
+
+		$expensesPieChart = $stmt->fetchAll();
+
+		return $expensesPieChart;
+    }
+	
+	
 }

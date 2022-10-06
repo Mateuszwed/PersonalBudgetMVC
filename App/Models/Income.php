@@ -127,7 +127,7 @@ class Income extends \Core\Model
 			$this->errors[3] = 'Data nie może być z przyszłości!';
 		}
 		  
-		elseif($month = $currentmonth) {
+		elseif($month == $currentmonth) {
 			if($day > $currentday) {
 			$this->errors[3] = 'Data nie może być z przyszłości!';
 		

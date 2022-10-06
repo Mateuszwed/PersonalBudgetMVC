@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="row justify-content-md-center mt-3">
+			<div class="col-sm-3 col-md-6 col-lg-3 text-center formstyle">
+
+				<h2>USTAWIENIA</h2>
+				
+				
+				 <div class="option mb-2">
+				 <a href="/settings/editEmail" class="btn buttonbg mt-2">ZMIEŃ ADRES E-MAIL</a>
+				 </div>
+				 
+				 <div class="option mb-2">
+				 <a href="/settings/editPassword" class="btn buttonbg mt-2">ZMIEŃ HASŁO</a>
+				 </div>
+				 
+				 <div class="option mb-2">
+				 <a href="/" class="btn cancelButtonbg mt-4 mb-2">WRÓĆ</a>
+				 </div>
+				 
+				
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}

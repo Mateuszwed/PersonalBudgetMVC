@@ -44,6 +44,9 @@ class Balance extends Authenticated
 		$incomesGenerally = $balance->getIncomesGenerally($begin, $end);
         $expensesGenerally = $balance->getExpensesGenerally($begin, $end);
 		
+		$expensesPieChart = $balance->getExpensesPieChart($begin, $end);
+		$incomesPieChart = $balance->getIncomesPieChart($begin, $end);
+		
 		$incomesSum = 0;
         foreach($incomesGenerally as $amountIncome){
             $incomesSum += $amountIncome['SUM(amount)'];
@@ -53,12 +56,26 @@ class Balance extends Authenticated
         foreach($expensesGenerally as $amountExpense){
             $expensesSum += $amountExpense['SUM(amount)'];
         } 
+		
+		$balance = $incomesSum - $expensesSum;
+        $balance = number_format($balance, 2, '.' , '');
+		
+		if($balance > 0){
+            $balanceSentence = 'Gratulacje! Świetnie zarządzasz finansami! = '.$balance.' ZŁ';
+        } else if ($balance == 0) {
+            $balanceSentence = 'Nie udało Ci się zaoszczędzić. Wychodzisz na zero!';
+        } else {
+            $balanceSentence = 'Uważaj! Wpadasz w długi! = '.$balance.' ZŁ';
+        }
        
 		View::renderTemplate('Balance/balance.html', [
+			'incomesPieChart' => $incomesPieChart,
+			'expensesPieChart' => $expensesPieChart,
             'incomesGenerally' => $incomesGenerally,
             'expensesGenerally' => $expensesGenerally,
             'incomesSum' => $incomesSum,
-            'expensesSum' => $expensesSum
+            'expensesSum' => $expensesSum,
+			'balanceSentence' => $balanceSentence
 			
         ]);
     }

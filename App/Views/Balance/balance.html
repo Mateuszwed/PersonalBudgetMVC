@@ -29,7 +29,7 @@
 				<div style="clear:both;"></div>
 				
 				<div class="col-12 col-lg-6 mt-3 p-1 text-center leftPanel">
-				
+				{% if incomesGenerally is not empty %}
 					<div>PRZYCHODY</div>
 							<table class="text-center">
 								<tr>
@@ -41,19 +41,20 @@
 								<tr>
 									<td>{{ income[1] }}</td>
 									<td>{{ income[2] }}</td>
-									<td>{{ income[0] }}</td>
+									<td>{{ income[0] }} PLN</td>
 								</tr>
 								{% endfor %} 
 							</table>
-							{% if incomesSum %}
-								SUMA: {{ incomesSum }}
-								{% else %}
-								SUMA: 0.00
-								{% endif %}
+							{% else %}
+							BRAK PRZYCHODÓW
+							{% endif %}
 						
+
 				</div>
+				
 
 				<div class="col-12 col-lg-6 mt-3 p-1 text-center rightPanel">
+				{% if expensesGenerally is not empty %}
 					<div>WYDATKI</div>
 							<table class="text-center">
 								<tr>
@@ -65,18 +66,54 @@
 								<tr>
 									<td>{{ expense[0] }}</td>
 									<td>{{ expense[2] }}</td>
-									<td>{{ expense[1] }}</td>
+									<td>{{ expense[1] }} PLN</td>
 								</tr>
 								{% endfor %}
 							</table> 
-							{% if expensesSum %}
-								SUMA: {{ expensesSum }}
-								{% else %}
-								SUMA: 0.00
-								{% endif %}
-				</div>
-				<div style="clear:both;"></div>
+							{% else %}
+							BRAK WYDATKÓW
+							{% endif %}
 
+				</div>
+				
+				<div style="clear:both;"></div>
+				{% if incomesPieChart or expensesPieChart is not empty %}
+				<div class="mt-3 mb-3" style="background-color: gray; border-radius: 5px;">
+								<div class="col-12 col-lg-6 mt-3 p-1 text-center leftPanel">
+								{% if incomesSum %}
+								SUMA PRZYCHODÓW:
+								{{ incomesSum }} ZŁ
+								{% else %}
+								{% endif %}
+								
+								{% if incomesPieChart is not empty %}
+								<div>
+									<div id="piechartIncome"></div>
+								</div>
+								{% endif %}
+								</div>
+								
+								<div class="col-12 col-lg-6 mt-3 p-1 text-center rightPanel">
+								{% if expensesSum %}
+								SUMA WYDATKÓW:
+								{{ expensesSum }} ZŁ
+								{% else %}
+								{% endif %}
+								
+								{% if expensesPieChart is not empty %}
+								
+								<div>
+									<div id="piechartExpense"></div> 				
+								</div>
+								{% endif %}
+								</div>
+								
+				<div style="clear:both;"></div>
+				
+				</div>
+				{{ balanceSentence }}
+				{% else %}
+				{% endif %}
 
 				<div class="col-12">
 
@@ -111,5 +148,54 @@
 		</div>
 	</div>
 </div>
+
+<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+	<script type = "text/javascript">
+
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+
+				var dataIncome = google.visualization.arrayToDataTable([
+					['Task', 'Cost'],
+					{% for income in incomesPieChart %}							
+					[ ' {{income.name}} ', {{ income.3 }} ],							
+					{% endfor %}
+				]);
+
+				var dataExpense = google.visualization.arrayToDataTable([
+					['Task', 'Cost'],
+					{% for expense in expensesPieChart %}
+					[ ' {{expense.name}} ', {{ expense.3 }} ],
+					{% endfor %}
+				]);
+
+				var optionsIncome = {
+					legend: {position: 'right', textStyle: {color: 'white'}},
+					backgroundColor:'transparent', 
+					pieSliceBorderColor: '#bfbfbf',
+					width: 'auto',
+					height: 'auto'
+				};
+
+				var optionsExpense = {
+					legend: {position: 'right', textStyle: {color: 'white'}},
+					backgroundColor:'transparent', 
+					pieSliceBorderColor: '#bfbfbf',
+					width: 'auto',
+					height: 'auto'
+				};
+				  
+				  
+				var chartIncome = new google.visualization.PieChart(document.getElementById('piechartIncome'));
+					chartIncome.draw(dataIncome, optionsIncome);
+
+				var chartExpense = new google.visualization.PieChart(document.getElementById('piechartExpense'));
+					chartExpense.draw(dataExpense, optionsExpense);
+			}
+	
+	</script>
+
 
 {% endblock %}

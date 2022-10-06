@@ -7,12 +7,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 
-/**
- * Items controller (example)
- *
- * PHP version 7.0
- */
-//class Items extends \Core\Controller
+
 class Incomes extends Authenticated
 {
 
@@ -36,6 +31,7 @@ class Incomes extends Authenticated
             View::renderTemplate('Incomes/success.html');
 
         } else {
+			
             Flash::addMessage('Nie udało się zarejestrować przychodu.', Flash::WARNING);
             $categories = new Income();
 			$categoriesIncomes = $categories->getIncomesCategories();
