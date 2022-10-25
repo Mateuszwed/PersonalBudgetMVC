@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\Setting;
 use \App\Models\Expense;
+use \App\Models\Income;
 use \App\Auth;
 use \App\Flash;
 
@@ -36,6 +37,16 @@ class Settings extends Authenticated
 
 		View::renderTemplate('Settings/editExpenses.html',  [
 		'categoriesExpenses' => $categoriesExpenses
+		]);
+	}
+
+    public function editIncomesAction(){
+
+		$categories = new Income();
+		$categoriesIncomes = $categories->getIncomesCategories();
+
+		View::renderTemplate('Settings/editIncomes.html',  [
+		'categoriesIncomes' => $categoriesIncomes
 		]);
 	}
 
@@ -103,6 +114,32 @@ class Settings extends Authenticated
             }
          }
 
+        public function addNewIncomeCategoryAction(){
+
+            $newIncomeCategory = new Income($_POST);
+
+            if ($newIncomeCategory->newCategory()) {
+
+				Flash::addMessage('Dodano nową kategorię.');
+
+                $this -> redirect('/Settings/editIncomes');
+
+
+            } else {
+
+                $categories = new Income();
+                $categoriesIncomes = $categories->getIncomesCategories();
+
+                Flash::addMessage('Nie udało się dodać nowej kategorii, spróbuj ponownie.', Flash::WARNING);
+
+                View::renderTemplate('Settings/editIncomes.html',  [
+                'categoriesIncomes' => $categoriesIncomes,
+                'income' => $newIncomeCategory
+                ]);
+
+            }
+        }
+
         public function deleteExpenseCategoryAction(){
             $category = new Expense($_POST);
 
@@ -114,6 +151,23 @@ class Settings extends Authenticated
             } else {
                 Flash::addMessage('Nie udało się usunąć kategorii. spróbuj ponownie później.', Flash::WARNING);
                  $this -> redirect('/Settings/editExpenses');
+
+
+            }
+
+        }
+
+        public function deleteIncomeCategoryAction(){
+            $category = new Income($_POST);
+
+            if ($category->deleteCategory()) {
+
+                Flash::addMessage('Kategoria została usunięta pomyślnie.');
+                $this -> redirect('/Settings/editIncomes');
+
+            } else {
+                Flash::addMessage('Nie udało się usunąć kategorii. spróbuj ponownie później.', Flash::WARNING);
+                $this -> redirect('/Settings/editIncomes');
 
 
             }
@@ -138,6 +192,31 @@ class Settings extends Authenticated
                 View::renderTemplate('Settings/editExpenses.html',  [
                 'categoriesExpenses' => $categoriesExpenses,
                 'expense' => $category
+                ]);
+
+            }
+
+
+        }
+
+        public function editIncomeCategoryAction(){
+
+            $category = new Income($_POST);
+
+            if ($category->editCategory()) {
+
+                Flash::addMessage('Nazwa kategorii została zmieniona.');
+                $this -> redirect('/Settings/editIncomes');
+
+            } else {
+
+                $categoriesIncomes = $category->getIncomesCategories();
+
+                Flash::addMessage('Nie udało się edytować kategorii. spróbuj ponownie później.', Flash::WARNING);
+
+                View::renderTemplate('Settings/editIncomes.html',  [
+                'categoriesIncomes' => $categoriesIncomes,
+                'income' => $category
                 ]);
 
             }
