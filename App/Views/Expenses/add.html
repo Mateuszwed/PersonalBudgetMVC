@@ -8,9 +8,9 @@
 	
 	<div class="row justify-content-md-center mt-3">
 	
-		<div class="col-sm-10 col-md-6 col-lg-5 text-center formstyle">
+		<div class="col-sm-10 col-md-6 col-lg-5 formstyle">
 			
-			<h2>DODAJ WYDATEK</h2>
+			<h2 class="text-center">DODAJ WYDATEK</h2>
 			
 			<form method="post" action="/expenses/create">
 			
@@ -24,7 +24,7 @@
 				<input type="date" class="form-control" id="theDate" name="date" value="{{ expense.date }}" required>
 			  </div>
 				 
-					<div class="category border border-white right-text-styling w-75 mx-auto">
+					<div class="category border border-white right-text-styling w-75 mx-auto p-2">
 					
 					Sposób płatności:
 						{% for payment in paymentMethod %}	
@@ -42,15 +42,21 @@
 						<div class="form-group mb-3 mt-2 right-text-styling w-75 mx-auto">
 						<label>Kategoria:
 						
-						<select name="category" class="form-select mt-1 mb-1">
+						<select name="category" id="category" class="form-select mt-1 mb-1" onChange="checkCategory()">
 						{% for category in categoriesExpenses %}
-						<option value="{{category[1]}}" id='c{{category[1]}}'>{{ category[0] }}</option>
+						<option value="{{category[1]}}">{{ category[0] }}</option>
 						{% endfor %}
 						</select>
 						
 						</label>
 						</div>
-						
+
+						<div id="isLimitDiv" class="form-group mb-3 mt-2 right-text-styling w-75 mx-auto">
+
+
+						</div>
+
+
 					</div>
 				
 				<div class="category">
@@ -60,9 +66,10 @@
 					</div>
 					
 				</div>
-				
-					<button type="submit" class="btn buttonbg mt-2">DODAJ</button>
-					<a href="/" class="btn cancelButtonbg mt-2">WRÓĆ</a>
+					<div class="text-center">
+						<button type="submit" class="btn buttonbg mt-2">DODAJ</button>
+						<a href="/" class="btn cancelButtonbg mt-2">WRÓĆ</a>
+					</div>
 					<div style="clear:both;"></div>
 					
 					{% if expense.errors is not empty %}
@@ -94,5 +101,7 @@
 	document.getElementById("theDate").value = today;
 
 </script>
+
+<script src="../js/limit.js"></script>
 
 {% endblock %}

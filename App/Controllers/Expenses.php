@@ -18,13 +18,14 @@ class Expenses extends Authenticated
 		$categories = new Expense();
 		$categoriesExpenses = $categories->getExpensesCategories();
 		$paymentMethod = $categories->getPaymentMethods();
-		
+
+
         View::renderTemplate('Expenses/add.html', [
 		'categoriesExpenses' => $categoriesExpenses,
 		'paymentMethod' => $paymentMethod
 		]);
     }
-	
+
     public function createAction()
     {
         $user = Auth::getUser();
@@ -36,17 +37,37 @@ class Expenses extends Authenticated
 
         } else {
             Flash::addMessage('Nie udało się zarejestrować wydatku.', Flash::WARNING);
-           	
+
 			$categories = new Expense();
 			$categoriesExpenses = $categories->getExpensesCategories();
 			$paymentMethod = $categories->getPaymentMethods();
-			
+
             View::renderTemplate('Expenses/add.html', [
                 'expense' => $expense,
 				'categoriesExpenses' => $categoriesExpenses,
 				'paymentMethod' => $paymentMethod
             ]);
         }
+    }
+    public function expenseAction()
+    {
+
+        $id = $this->route_params['id'];
+
+        $data = Expense::expense($id);
+
+        echo json_encode($data);
+
+    }
+
+    public function checkLimit(){
+
+        $id = $this->route_params['id'];
+
+        $data = Expense::checkLimit($id);
+
+        echo json_encode($data);
+
     }
 
 }

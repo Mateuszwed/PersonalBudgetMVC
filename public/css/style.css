@@ -61,6 +61,21 @@ h2{
 	
 }
 
+.acceptButtonbg {
+	background-color: #067e96;
+	color: white;
+	font-weight: bold;
+}
+
+
+.acceptButtonbg:hover {
+	background-color: #035e70;
+}
+
+.acceptButtonbg:active {
+		background-color: #035e70;
+}
+
 
 .cancelButtonbg{
 	
@@ -76,6 +91,18 @@ h2{
 	background-color: #c97300;
 	
 }
+
+.deleteButtonbg {
+	background-color: #fa0202;
+	color: white;
+	font-weight: bold;
+}
+
+
+.deleteButtonbg:hover {
+	background-color: #c40202;
+}
+
 
 
 .period{
@@ -203,11 +230,6 @@ h2{
 	
 }
 
-
-.category{
-	
-	margin-top: 5px;
-}
 
 
 table{

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Edit expenses category{% endblock %}
+
+{% block body %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<div class="container">
+	<div class="row justify-content-md-center mt-3">
+		<div class="col-sm-3 col-md-6 col-lg-6  formstyle">
+
+			<h4 class="text-center" style="font-weight: bold;">KATEGORIE WYDATKÓW</h4>
+				
+			<form action="/settings/editExpenses" method="post">
+
+						
+				{% for category in categoriesExpenses %}
+					<div class="border p-2" style="background-color: #404040; border-radius: 8px;">
+						<div name="category" class="float-start"> {{ category[0] }}</div>
+							<div class="d-flex flex-row-reverse">
+								<button class="btn deleteButtonbg p-1 m-1" type="button" id="deleteButton" data-category-id="{{ category[1] }}" data-bs-toggle="modal" data-bs-target="#deleteModal"/><span class="material-symbols-outlined">delete</span>
+								<button class="btn btn-sm cancelButtonbg p-1 m-1" type="button" id="editButton" data-category-name="{{ category[0] }}" data-category-id="{{ category[1] }}" data-bs-toggle="modal" data-bs-target="#editModal"/><span class="material-symbols-outlined">edit_square</span>
+								<button class="btn btn-sm acceptButtonbg p-1 m-1" type="button" onclick="showLimit({{ category[1] }})" id="limitButton" data-category-id="{{ category[1] }}" data-category-limit="{{ category[2] }}" data-bs-toggle="modal" data-bs-target="#limitModal"/><span class="material-symbols-outlined">savings</span>
+							</div>
+					</div>
+
+					{% if category[2] != "0.00" and category[2] is not empty %}
+						<div class="border border-top-0 p-1" style="background: rgb(0, 224, 29, 0.3); border-radius: 8px;"><small>Limit {{ category[2] }} zł</small></div>
+					{% endif %}
+
+					<div class="mb-3"></div>
+
+				{% endfor %}
+				
+					{% if expense.errors is not empty %}
+						{% for error in expense.errors %}
+							<div class='error mt-2 text-center'>
+								{{ error }}
+							</div>
+						{% endfor %}
+					{% endif %}
+
+					<div class="d-flex justify-content-center">
+						<div class="option mb-2 m-1" style="float: left;">
+						<a href="#newCategoryModal" data-bs-toggle="modal" class="btn acceptButtonbg mt-4 mb-2">DODAJ KATEGORIE</a>
+						</div>
+
+
+						<div class="option mb-2 m-1" style="float: left;">
+						<a href="/settings/edit" class="btn cancelButtonbg mt-4 mb-2">WRÓĆ</a>
+						</div>
+					
+						<div style="clear:both;"></div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+<div class="modal fade text-body" id="newCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Dodaj kategorie</h4>
+			<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+			<form method="post" action="/settings/addNewExpenseCategory" >
+				<div class="modal-body text-center mt-3 mb-3">
+					<div id="selectPeriod">	
+						Nazwa nowej kategorii
+						<input type="text" name="newCategory" id="newCategory">
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn cancelButtonbg" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-primary" >Dodaj</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade text-body" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Usuń kategorię</h4>
+			<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+			<form method="post" action="/Settings/deleteExpenseCategory" >
+				<div class="modal-body text-center mt-3 mb-3">
+					<div id="selectPeriod">	
+						Czy na pewno chcesz usunąć kategorię?
+					</div>
+				</div>
+					<div class="row mb-3">
+						<div class="input-group justify-self-center">
+							<input type="hidden" name="categoryId">
+						</div>
+					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn cancelButtonbg" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn deleteButtonbg" >Usuń</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade text-body" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Edycja kategorii</h4>
+			<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+			<form method="post" action="/Settings/editExpenseCategory" >
+				<div class="modal-body text-center mt-3 mb-3">
+					<div id="selectPeriod">	
+						<label for="category" class="form-label text-center">Nowa nazwa kategorii</label>
+							<input id="category" class="form-control" type="text" name="newName" data-category-type="expense" required>
+					</div>
+				</div>
+					<div class="row mb-3">
+						<div class="input-group justify-self-center">
+							<input type="hidden" name="categoryId">
+						</div>
+					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn cancelButtonbg" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn acceptButtonbg" >Zmień</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade text-body" id="limitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">Ustaw limit</h4>
+			<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+			<form method="post" action="/Settings/setLimit" >
+				<div class="modal-body text-center mt-3 mb-3">
+					<div id="selectPeriod">	
+						<label for="category" class="form-label text-center">Limit</label>
+							<input id="limit" class="form-control" type="number" name="limit" step="0.01" data-bs-category-type="expense">
+					</div>
+				</div>
+					<div class="row mb-3">
+						<div class="input-group justify-self-center">
+							<input type="hidden" name="categoryId">
+						</div>
+					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn cancelButtonbg" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn acceptButtonbg" >Ustaw</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="../js/modal.js"></script>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+{% endblock %}
