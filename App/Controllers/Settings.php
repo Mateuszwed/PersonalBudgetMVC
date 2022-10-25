@@ -50,6 +50,16 @@ class Settings extends Authenticated
 		]);
 	}
 
+    public function editPaymentAction(){
+
+		$payments = new Expense();
+		$paymentMethod = $payments->getPaymentMethods();
+
+		View::renderTemplate('Settings/editPayments.html',  [
+		'paymentMethods' => $paymentMethod
+		]);
+	}
+
 	public function createPasswordAction(){
 
 		$user = Auth::getUser();
@@ -114,6 +124,33 @@ class Settings extends Authenticated
             }
          }
 
+        public function addNewPaymentMethodAction(){
+
+            $newPaymentMethod = new Expense($_POST);
+
+            if ($newPaymentMethod->newPaymentMethod()) {
+
+				Flash::addMessage('Dodano nowy sposób płatności.');
+
+                $this -> redirect('/Settings/editPayment');
+
+
+            } else {
+
+                $payment = new Expense();
+                $paymentMethods = $payment->getPaymentMethods();
+
+                Flash::addMessage('Nie udało się dodać nowej kategorii, spróbuj ponownie.', Flash::WARNING);
+
+                View::renderTemplate('Settings/editPayments.html',  [
+                'paymentMethods' => $paymentMethods,
+                'payment' => $newPaymentMethod
+                ]);
+
+            }
+        }
+
+
         public function addNewIncomeCategoryAction(){
 
             $newIncomeCategory = new Income($_POST);
@@ -149,8 +186,25 @@ class Settings extends Authenticated
                 $this -> redirect('/Settings/editExpenses');
 
             } else {
-                Flash::addMessage('Nie udało się usunąć kategorii. spróbuj ponownie później.', Flash::WARNING);
+                Flash::addMessage('Nie udało się usunąć kategorii. Spróbuj ponownie.', Flash::WARNING);
                  $this -> redirect('/Settings/editExpenses');
+
+
+            }
+
+        }
+
+        public function deletePaymentMethodAction(){
+            $payment = new Expense($_POST);
+
+            if ($payment->deletePaymentMethod()) {
+
+                Flash::addMessage('Metoda została usunięta pomyślnie.');
+                $this -> redirect('/Settings/editPayment');
+
+            } else {
+                Flash::addMessage('Nie udało się usunąć metody płatności. Spróbuj ponownie.', Flash::WARNING);
+                $this -> redirect('/Settings/editPayments');
 
 
             }
@@ -192,6 +246,32 @@ class Settings extends Authenticated
                 View::renderTemplate('Settings/editExpenses.html',  [
                 'categoriesExpenses' => $categoriesExpenses,
                 'expense' => $category
+                ]);
+
+            }
+
+
+        }
+
+
+        public function editPaymentMethodAction(){
+
+            $payment = new Expense($_POST);
+
+            if ($payment->editPaymentMethod()) {
+
+                Flash::addMessage('Nazwa sposobu płatności została zmieniona.');
+                $this -> redirect('/Settings/editPayment');
+
+            } else {
+
+                $paymentMethods = $payment->getPaymentMethods();
+
+                Flash::addMessage('Nie udało się edytować sposobu płatności. spróbuj ponownie później.', Flash::WARNING);
+
+                View::renderTemplate('Settings/editPayments.html',  [
+                'paymentMethods' => $paymentMethods,
+                'payment' => $payment
                 ]);
 
             }

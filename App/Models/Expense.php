@@ -174,10 +174,34 @@ class Expense extends \Core\Model
         return $stmt->fetch();
     }
 
+    public static function findPaymentName($name)
+    {
+        $sql = 'SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_STR);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
     public function validateExpenseCategory($name){
 
         if ($this->findCategoryName($name)) {
             $this->errors[4] = 'Kategoria o takiej nazwie już istnieje.';
+        }
+
+    }
+
+    public function validatePaymentMethod($name){
+
+        if ($this->findPaymentName($name)) {
+            $this->errors[4] = 'Sposób płatności o takiej nazwie już istnieje.';
         }
 
     }
@@ -212,11 +236,49 @@ class Expense extends \Core\Model
         return false;
     }
 
+    public function newPaymentMethod() {
+
+        $name = $this->changeToUpperCase($this->newCategory);
+
+        $this->validatePaymentMethod($name);
+
+        if (empty($this->errors)) {
+            $userID = $this->setUserID();
+
+            $sql = "INSERT INTO payment_methods_assigned_to_users
+                VALUES (null, :user_id, :name)";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':user_id', $userID, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 
     public function deleteCategory() {
 
         if(empty($this->errors)) {
             $sql='DELETE FROM expenses_category_assigned_to_users
+            WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->categoryId, PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		return false;
+
+    }
+
+    public function deletePaymentMethod() {
+
+        if(empty($this->errors)) {
+            $sql='DELETE FROM payment_methods_assigned_to_users
             WHERE id = :id';
 
             $db = static::getDB();
@@ -239,6 +301,29 @@ class Expense extends \Core\Model
         if(empty($this->errors)) {
 
             $sql='UPDATE expenses_category_assigned_to_users
+            SET name = :name WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->categoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
+		return false;
+
+    }
+
+    public function editPaymentMethod() {
+
+        $name = $this->changeToUpperCase($this->newName);
+
+        $this->validatePaymentMethod($name);
+
+        if(empty($this->errors)) {
+
+            $sql='UPDATE payment_methods_assigned_to_users
             SET name = :name WHERE id = :id';
 
             $db = static::getDB();
