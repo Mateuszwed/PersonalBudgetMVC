@@ -38,7 +38,7 @@ class Expense extends \Core\Model
             $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
             $stmt->bindValue(':date_of_expense', $this->date, PDO::PARAM_STR);
             $stmt->bindValue(':payment_method_assigned_to_user_id', $this->payment, PDO::PARAM_INT);
-            $stmt->bindValue(':expense_category_assigned_to_user_id', $this->category, PDO::PARAM_INT);
+            $stmt->bindValue(':expense_category_assigned_to_user_id', $this->categorySelect, PDO::PARAM_INT);
             $stmt->bindValue(':expense_comment', $this->comment, PDO::PARAM_STR);
 
             return $stmt->execute();
@@ -103,7 +103,7 @@ class Expense extends \Core\Model
             $this->errors[1] = 'Wybierz sposób płatności!';
 		}
 
-        if (!isset($this->category)) {
+        if (!isset($this->categorySelect)) {
             $this->errors[2] = 'Wybierz kategorię!';
 		}
 
@@ -224,7 +224,7 @@ class Expense extends \Core\Model
             $userID = $this->setUserID();
 
             $sql = "INSERT INTO expenses_category_assigned_to_users
-                VALUES (null, :user_id, :name, null)";
+                    VALUES (null, :user_id, :name, null)";
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -246,7 +246,7 @@ class Expense extends \Core\Model
             $userID = $this->setUserID();
 
             $sql = "INSERT INTO payment_methods_assigned_to_users
-                VALUES (null, :user_id, :name)";
+                     VALUES (null, :user_id, :name)";
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -262,7 +262,7 @@ class Expense extends \Core\Model
 
         if(empty($this->errors)) {
             $sql='DELETE FROM expenses_category_assigned_to_users
-            WHERE id = :id';
+                  WHERE id = :id';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -279,7 +279,7 @@ class Expense extends \Core\Model
 
         if(empty($this->errors)) {
             $sql='DELETE FROM payment_methods_assigned_to_users
-            WHERE id = :id';
+                  WHERE id = :id';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -301,7 +301,7 @@ class Expense extends \Core\Model
         if(empty($this->errors)) {
 
             $sql='UPDATE expenses_category_assigned_to_users
-            SET name = :name WHERE id = :id';
+                  SET name = :name WHERE id = :id';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -324,7 +324,7 @@ class Expense extends \Core\Model
         if(empty($this->errors)) {
 
             $sql='UPDATE payment_methods_assigned_to_users
-            SET name = :name WHERE id = :id';
+                  SET name = :name WHERE id = :id';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -363,7 +363,7 @@ class Expense extends \Core\Model
         if(empty($this->errors)) {
 
             $sql='UPDATE expenses_category_assigned_to_users
-            SET limit_amount = :limit WHERE id = :id';
+                  SET limit_amount = :limit WHERE id = :id';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -376,4 +376,52 @@ class Expense extends \Core\Model
         return false;
     }
 
+
+    public static function getGroupedExpenses($id, $firstDate, $lastDate)
+    {
+
+        $sql = "SELECT name ,SUM(amount) AS sum
+                FROM expenses
+                INNER JOIN expenses_category_assigned_to_users
+                ON expense_category_assigned_to_user_id = expenses_category_assigned_to_users.id
+                WHERE expenses.user_id = :userId
+                AND date_of_expense
+                BETWEEN :firstDate AND :lastDate
+                AND expense_category_assigned_to_user_id = :id
+                GROUP BY name
+                ORDER BY sum DESC";
+
+
+        $db = static::getDB();
+
+        $stmt = $db -> prepare($sql);
+        $stmt -> bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt -> bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt -> bindValue(':firstDate', $firstDate, PDO::PARAM_STR);
+        $stmt -> bindValue(':lastDate', $lastDate, PDO::PARAM_STR);
+        $stmt -> execute();
+
+        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    public static function getLimit($id){
+
+        $sql = "SELECT limit_amount
+                FROM expenses_category_assigned_to_users
+                WHERE id = :id
+                AND user_id = :userId";
+
+
+        $db = static::getDB();
+
+
+        $stmt = $db -> prepare($sql);
+        $stmt -> bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt -> bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt -> execute();
+
+        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    }
 }

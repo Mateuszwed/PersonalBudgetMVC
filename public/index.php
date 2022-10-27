@@ -35,8 +35,8 @@ $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'ac
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('{controller}/{action}');
 
-$router->add('expenses/expense/{id:[\d]+}', ['controller' => 'Expenses', 'action' => 'expense']);
-$router->add('expenses/getLimitForCategory/{id:[\d]+}', ['controller' => 'Expenses', 'action' => 'getLimitForCategory']);
+$router->add('expenses/getExpenses/{id:[\d]+}/{date:(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])}/{lastdate:(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])}', ['controller' => 'Expenses', 'action' => 'getExpenses']);
+$router->add('expenses/getCategoryLimit/{id:[\d]+}', ['controller' => 'Expenses', 'action' => 'getCategoryLimit']);
 
 
 $router->dispatch($_SERVER['QUERY_STRING']);

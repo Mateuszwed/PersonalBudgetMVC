@@ -305,3 +305,32 @@ i{
 	color: white;
 	
 }
+
+
+#showLimit {
+	background-color: grey;
+	opacity: 0.9;
+	height : 9%;
+	transition: all 0.1s linear;
+}
+
+#showLimit.hide {
+	opacity: 0;
+	height : 0%;
+	transition: all 0.1s linear;
+}
+
+.textLimit {
+	text-shadow: 0 0 3px black, 0 0 5px black;
+	font-weight: bold;
+	margin-right: 20px;
+	font-size: 13px;
+}
+
+.limitStyleInfo {
+	float: left;
+	border-right: 2px dashed white;
+}
+.limitStyleInfo:first-child {
+	border-left: 2px dashed white;
+}

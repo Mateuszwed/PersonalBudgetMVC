@@ -49,15 +49,26 @@ class Expenses extends Authenticated
             ]);
         }
     }
-    public function expenseAction()
+    public function getExpensesAction()
     {
 
-        $id = $this->route_params['id'];
+        $categoryID = $this->route_params['id'];
+        $date = $this->route_params['date'];
+        $lastDate = $this->route_params['lastdate'];
 
-        $data = Expense::expense($id);
+        $data = Expense::getGroupedExpenses($categoryID, $date, $lastDate);
 
         echo json_encode($data);
 
+    }
+
+    public function getCategoryLimitAction()
+    {
+
+        $id = $this->route_params['id'];
+        $date = Expense::getLimit($id);
+
+        echo json_encode($date);
     }
 
     public function checkLimit(){
