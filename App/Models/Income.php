@@ -65,10 +65,11 @@ class Income extends \Core\Model
 
         $sql = "SELECT name, id
                 FROM incomes_category_assigned_to_users
-                WHERE user_id = $userID";
+                WHERE user_id = :user_id";
 
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $userID, PDO::PARAM_INT);
 		$stmt->execute();
 
         $incomesCategories = $stmt->fetchAll();

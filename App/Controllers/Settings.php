@@ -186,7 +186,7 @@ class Settings extends Authenticated
                 $this -> redirect('/Settings/editExpenses');
 
             } else {
-                Flash::addMessage('Nie udało się usunąć kategorii. Spróbuj ponownie.', Flash::WARNING);
+                Flash::addMessage('Nie udało się usunąć kategorii. Spróbuj ponownie później.', Flash::WARNING);
                  $this -> redirect('/Settings/editExpenses');
 
 
@@ -203,7 +203,7 @@ class Settings extends Authenticated
                 $this -> redirect('/Settings/editPayment');
 
             } else {
-                Flash::addMessage('Nie udało się usunąć metody płatności. Spróbuj ponownie.', Flash::WARNING);
+                Flash::addMessage('Nie udało się usunąć metody płatności. Spróbuj ponownie później.', Flash::WARNING);
                 $this -> redirect('/Settings/editPayments');
 
 
@@ -220,7 +220,7 @@ class Settings extends Authenticated
                 $this -> redirect('/Settings/editIncomes');
 
             } else {
-                Flash::addMessage('Nie udało się usunąć kategorii. spróbuj ponownie później.', Flash::WARNING);
+                Flash::addMessage('Nie udało się usunąć kategorii. Spróbuj ponownie później.', Flash::WARNING);
                 $this -> redirect('/Settings/editIncomes');
 
 
@@ -241,7 +241,7 @@ class Settings extends Authenticated
 
                 $categoriesExpenses = $category->getExpensesCategories();
 
-                Flash::addMessage('Nie udało się edytować kategorii. spróbuj ponownie później.', Flash::WARNING);
+                Flash::addMessage('Nie udało się edytować kategorii. Spróbuj ponownie.', Flash::WARNING);
 
                 View::renderTemplate('Settings/editExpenses.html',  [
                 'categoriesExpenses' => $categoriesExpenses,
@@ -267,7 +267,7 @@ class Settings extends Authenticated
 
                 $paymentMethods = $payment->getPaymentMethods();
 
-                Flash::addMessage('Nie udało się edytować sposobu płatności. spróbuj ponownie później.', Flash::WARNING);
+                Flash::addMessage('Nie udało się edytować sposobu płatności. Spróbuj ponownie.', Flash::WARNING);
 
                 View::renderTemplate('Settings/editPayments.html',  [
                 'paymentMethods' => $paymentMethods,
@@ -292,7 +292,7 @@ class Settings extends Authenticated
 
                 $categoriesIncomes = $category->getIncomesCategories();
 
-                Flash::addMessage('Nie udało się edytować kategorii. spróbuj ponownie później.', Flash::WARNING);
+                Flash::addMessage('Nie udało się edytować kategorii. Spróbuj ponownie.', Flash::WARNING);
 
                 View::renderTemplate('Settings/editIncomes.html',  [
                 'categoriesIncomes' => $categoriesIncomes,

@@ -63,10 +63,11 @@ class Expense extends \Core\Model
 
 		$sql = "SELECT name, id, limit_amount
                 FROM expenses_category_assigned_to_users
-                WHERE user_id = $userID";
+                WHERE user_id = :user_id";
 
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $userID, PDO::PARAM_INT);
 		$stmt->execute();
 
 		$expensesCategories = $stmt->fetchAll();
@@ -81,10 +82,11 @@ class Expense extends \Core\Model
 
         $sql = "SELECT name, id
                 FROM payment_methods_assigned_to_users
-                WHERE user_id = $userID";
+                WHERE user_id = :user_id";
 
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $userID, PDO::PARAM_INT);
 		$stmt->execute();
 
 		$paymentMethods = $stmt->fetchAll();
@@ -140,6 +142,7 @@ class Expense extends \Core\Model
 	}
 
     //-------------------------------------------------------
+
     public static function expense($id){
 
         $sql = "SELECT *
@@ -341,7 +344,7 @@ class Expense extends \Core\Model
     public function ifEmptyLimit(){
 
         if ($this->limit == 0 || $this->limit == null) {
-            return $this->limit = null;
+            return $this->limit = 0.00;
         }
 
 

@@ -14,19 +14,19 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = '';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'personalbudget';
+    const DB_NAME = '';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = '';
 
     /**
      * Database password

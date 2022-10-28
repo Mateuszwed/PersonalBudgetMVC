@@ -7,19 +7,22 @@ let monthlySum = document.getElementById('monthlySum');
 let infoAboutLimit = document.getElementById('info');
 
 
+
 const checkCategory = async () => {
 
     let categoryId = categorySelect.value;
     let date = getDateFromInput();
     let categoryLimit;
 
-    const limit = await getLimitForCategory(categoryId).then(data => {
+    const limitData = await getLimitForCategory(categoryId).then(data => {
         categoryLimit = Number(data);
     });
 
     if (categoryLimit === 0) {
         divLimit(show, false);
+
     } else {
+
         divLimit(show, true);
         checkLimit(categoryLimit, categoryId, date);
     }
@@ -28,7 +31,7 @@ const checkCategory = async () => {
 
 const checkLimit = async (categoryLimit, categoryId, date) => {
 
-    const jsoNData = await getSumOfExpensesForSelectedMonth(categoryId, date).then(data => {
+    const sumOfExpenseData = await getSumOfExpensesForSelectedMonth(categoryId, date).then(data => {
         sumOfExpensesMonthly = data;
     });
     let getAmountInput = amountInput.value;
@@ -46,11 +49,13 @@ const checkLimit = async (categoryLimit, categoryId, date) => {
 const getLimitForCategory = async (id) => {
 
     try {
+
         const response = await fetch(`/expenses/getCategoryLimit/${id}`);
         const data = await response.json();
 
         return data[0].limit_amount;
     }   
+
     catch (error) {
         console.error(`Error: ${error}`);
     }
@@ -68,8 +73,11 @@ const getSumOfExpensesForSelectedMonth = async (categoryID, date) => {
         const data = await response.json();
 
         if (data.length === 0) {
+
             return 0
+
         } else {
+
             console.log(data[0].sum)
             return data[0].sum;
         }
@@ -80,12 +88,14 @@ const getSumOfExpensesForSelectedMonth = async (categoryID, date) => {
     
 };
 
+
 const calculateLimits = async (limit, amount) => {
 
     diferent = limit - amount;
 
     return diferent;
 };
+
 
 function divLimit(element, show) {
     if (show === false) {
@@ -100,8 +110,6 @@ const renderOnDom = (categoryLimit, sumOfExpensesMonthly, getAmountInput) => {
 
     limitForCategory.textContent = `${categoryLimit}`;
     monthlySum.textContent = `${sumOfExpensesMonthly}`;
-    let restAmount2 = categoryLimit - sumOfExpensesMonthly;
-    let restAmount = +restAmount2 - +getAmountInput;
     let expensesAndInputAmount = +sumOfExpensesMonthly + +getAmountInput;
 
     if (categoryLimit < +sumOfExpensesMonthly + +getAmountInput) {
@@ -140,6 +148,7 @@ const getFirstDay = (date) => {
     return firstDay;
 };
 
+
 const getLastDay = (date) => {
 
     let dateFromInput = date;
@@ -156,12 +165,15 @@ categorySelect.addEventListener('change', async () => {
     await checkCategory();
 })
 
+
 dateInput.addEventListener('change', async () => {
     await checkCategory();
 })
 
+
 amountInput.addEventListener('change', async () => {
     await checkCategory();
 })
+
 
 document.onload = checkCategory();
