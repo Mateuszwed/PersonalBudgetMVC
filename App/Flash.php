@@ -8,8 +8,7 @@ namespace App;
  *
  * PHP version 7.0
  */
-class Flash
-{
+class Flash {
 
     /**
      * Success message type
@@ -44,7 +43,6 @@ class Flash
         if (! isset($_SESSION['flash_notifications'])) {
             $_SESSION['flash_notifications'] = [];
         }
-
         // Append the message to the array
         //$_SESSION['flash_notifications'][] = $message;
         $_SESSION['flash_notifications'][] = [

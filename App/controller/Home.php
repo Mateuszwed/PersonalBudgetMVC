@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Controllers;
+namespace App\controller;
 
 use \Core\View;
 
 
 class Home extends \Core\Controller
 {
-
-
-    public function indexAction()
-    {
+    public function indexAction() {
         View::renderTemplate('Home/index.html');
     }
 }

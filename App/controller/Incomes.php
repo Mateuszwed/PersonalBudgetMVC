@@ -1,46 +1,36 @@
 <?php
 
-namespace App\Controllers;
+namespace App\controller;
 
-use \App\Models\Income;
+use \App\model\Income;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
 
 
-class Incomes extends Authenticated
-{
+class Incomes extends Authenticated {
 
-    public function addAction()
-    {
-		$categories = new Income();
-		$categoriesIncomes = $categories->getIncomesCategories();
+    public function addAction() {
+        $categories = new Income();
+        $categoriesIncomes = $categories->getIncomesCategories();
         View::renderTemplate('Incomes/add.html', [
-			'categoriesIncomes' => $categoriesIncomes
-		]);
+            'categoriesIncomes' => $categoriesIncomes
+        ]);
     }
-	
-	 public function createAction()
-    {
+
+    public function createAction() {
         $user = Auth::getUser();
         $income = new Income($_POST);
-		
-        
         if ($income->save($user->id)) {
-
             View::renderTemplate('Incomes/success.html');
-
         } else {
-			
             Flash::addMessage('Nie udało się zarejestrować przychodu.', Flash::WARNING);
             $categories = new Income();
-			$categoriesIncomes = $categories->getIncomesCategories();
-        
+            $categoriesIncomes = $categories->getIncomesCategories();
             View::renderTemplate('Incomes/add.html', [
                 'income' => $income,
-				'categoriesIncomes' => $categoriesIncomes
+                'categoriesIncomes' => $categoriesIncomes
             ]);
         }
     }
-
 }

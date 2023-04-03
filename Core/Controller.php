@@ -9,8 +9,7 @@ use \App\Flash;
  *
  * PHP version 7.0
  */
-abstract class Controller
-{
+abstract class Controller {
 
     /**
      * Parameters from the matched route
@@ -41,10 +40,8 @@ abstract class Controller
      *
      * @return void
      */
-    public function __call($name, $args)
-    {
+    public function __call($name, $args) {
         $method = $name . 'Action';
-
         if (method_exists($this, $method)) {
             if ($this->before() !== false) {
                 call_user_func_array([$this, $method], $args);
@@ -60,8 +57,7 @@ abstract class Controller
      *
      * @return void
      */
-    protected function before()
-    {
+    protected function before() {
     }
 
     /**
@@ -69,12 +65,10 @@ abstract class Controller
      *
      * @return void
      */
-    protected function after()
-    {
+    protected function after() {
     }
 	
 	public function redirect($url){
-		
 		header('Location: http://' . $_SERVER['HTTP_HOST'] . $url, true, 303);
 		exit;
 		
@@ -82,15 +76,10 @@ abstract class Controller
 	
 	
 	public function requireLogin(){
-		
 		if(! Auth::getUser()) {
-		
 		Flash::addMessage('Musisz najpierw się zalogować zanim zobaczysz tę stronę', Flash::INFO);
-		
 		Auth::rememberRequestedPage();
-			
 		$this->redirect('/login');
-	}
-		
+	    }
 	}
 }

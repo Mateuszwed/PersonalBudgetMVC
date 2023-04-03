@@ -8,8 +8,7 @@ namespace Core;
  *
  * PHP version 7.0
  */
-class View
-{
+class View {
 
     /**
      * Render a view file
@@ -19,12 +18,9 @@ class View
      *
      * @return void
      */
-    public static function render($view, $args = [])
-    {
+    public static function render($view, $args = []) {
         extract($args, EXTR_SKIP);
-
-        $file = dirname(__DIR__) . "/App/Views/$view";  // relative to Core directory
-
+        $file = dirname(__DIR__) . "/App/view/$view";  // relative to Core directory
         if (is_readable($file)) {
             require $file;
         } else {
@@ -40,23 +36,19 @@ class View
      *
      * @return void
      */
-    public static function renderTemplate($template, $args = [])
-    {
+    public static function renderTemplate($template, $args = []) {
         echo static::getTemplate($template, $args);
     }
 	
 	
-	public static function getTemplate($template, $args = [])
-    {
+	public static function getTemplate($template, $args = []) {
         static $twig = null;
-
         if ($twig === null) {
-            $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
+            $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/view');
             $twig = new \Twig\Environment($loader);
             $twig->addGlobal('current_user', \App\Auth::getUser());
             $twig->addGlobal('flash_messages', \App\Flash::getMessages());
         }
-
         return $twig->render($template, $args);
     }
 }

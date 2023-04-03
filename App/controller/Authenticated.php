@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\controller;
 
 
 abstract class Authenticated extends \Core\Controller
