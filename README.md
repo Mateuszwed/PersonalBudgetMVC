@@ -39,16 +39,16 @@ larger amounts in the long term.
 - AJAX
 </b>
 
-![1.png](images%2F1.png)
-![2.png](images%2F2.png)
-![3.png](images%2F3.png)
-![4.png](images%2F4.png)
-![5.png](images%2F5.png)
-![6.png](images%2F6.png)
-![7.png](images%2F7.png)
-![8.png](images%2F8.png)
-![9.png](images%2F9.png)
-![10.png](images%2F10.png)
-![11.png](images%2F11.png)
+![1.png](images/1.png)
+![2.png](images/2.png)
+![3.png](images/3.png)
+![4.png](images/4.png)
+![5.png](images/5.png)
+![6.png](images/6.png)
+![7.png](images/7.png)
+![8.png](images/8.png)
+![9.png](images/9.png)
+![10.png](images/10.png)
+![11.png](images/11.png)
 
 https://budget.mateusz-szwed.profesjonalnyprogramista.pl/
